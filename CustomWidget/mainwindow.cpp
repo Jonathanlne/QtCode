@@ -1,7 +1,7 @@
 ﻿#include "mainwindow.h"
 #include "ui_mainwindow.h"
-#include "InputWidget.h"
-
+#include "KInputBox.h"
+#include <QIntValidator>
 #include <QDateEdit>
 #include <QLineEdit>
 MainWindow::MainWindow(QWidget *parent) :
@@ -9,7 +9,10 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    InputWidget *widget = new InputWidget("测试", InputWidget::ComboBox);
+
+    KInputBox *widget = new KInputBox("测试", KInputBox::Text);
+    widget->SetWidth(1000);
+    /*
     widget->AppendText("cm", 150);
     widget->AppendWidget(new QDateEdit(), 150, 1);
     widget->AppendWidget(new QLineEdit());
@@ -32,6 +35,9 @@ MainWindow::MainWindow(QWidget *parent) :
     //widget->setEnabled(false);
     //widget->show();
     widget->SetFontSize(16);
+    widget->SetValidator(new QIntValidator());
+    */
+    widget->AppendText("this is a demo", 0, 1);
     setCentralWidget(widget);
 }
 

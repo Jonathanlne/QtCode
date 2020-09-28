@@ -26,11 +26,11 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
         main.cpp \
         mainwindow.cpp \
-    InputWidget.cpp
+    KInputBox.cpp
 
 HEADERS += \
         mainwindow.h \
-    InputWidget.h
+    KInputBox.h
 
 FORMS += \
         mainwindow.ui

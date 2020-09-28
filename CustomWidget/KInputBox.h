@@ -3,12 +3,13 @@
 #include <QWidget>
 #include <QDate>
 #include <QList>
+#include <QValidator>
 class QLineEdit;
 class QLabel;
 class QDateEdit;
 class QHBoxLayout;
 class QComboBox;
-class InputWidget : public QWidget
+class KInputBox : public QWidget
 {
     Q_OBJECT
 public:
@@ -18,10 +19,12 @@ public:
         Date,
         ComboBox
     };
-    InputWidget(const QString &tItemName, const InputType &type = Text,
+    KInputBox(const QString &tItemName, const InputType &type = Text,
                 QWidget *parent = nullptr);
 
     std::string GetInput();
+    int GetInputInt();
+    double GetInputDouble();
     QDate GetDate();
     void AddInputWidget(int num,const QList<int> &widths = QList<int>(), const QList<int> &weights = QList<int>());
     void AddComboItem(const QString &item);
@@ -45,15 +48,15 @@ public:
     void AppendWidget(QWidget *pWidget, int width = 0,  int weight = 0);
     void AppendText(const QString& text, int width = 0, int weight = 0);
     void InsertWidget(int index, QWidget *pWidget, int width = 0, int weight = 0);
-
+    void SetValidator(const QValidator *validator);
 private:
     QLineEdit          *m_pLineEdit;
     QLabel             *m_pItemName;
     QDateEdit          *m_pDateEdit;
     QHBoxLayout        *m_pLayout;
-    int                 m_FontSize;
     QList<QLineEdit *>  m_InputList;
     QList<QWidget *>    m_WidgetList;
     QComboBox          *m_pComboBox;
+    int                 m_FontSize;
 };
 

@@ -1,4 +1,4 @@
-﻿#include "InputWidget.h"
+﻿#include "KInputBox.h"
 
 #include <QLineEdit>
 #include <QLabel>
@@ -7,18 +7,19 @@
 #include <QCalendarWidget>
 #include <QList>
 #include <QComboBox>
+#include <QDoubleValidator>
 const int DEFAULT_WIDTH     = 300;
 const int DEFAULT_HEIGHT    = 30;
 const int DEFAULT_FONT_SIZE = 12;
 
-InputWidget::InputWidget(const QString &tItemName, const InputType &type,
+KInputBox::KInputBox(const QString &tItemName, const InputType &type,
                          QWidget *parent):
     QWidget(parent),
     m_pLineEdit(nullptr),
     m_pItemName(nullptr),
     m_pDateEdit(nullptr),
-    m_FontSize(DEFAULT_FONT_SIZE),
-    m_pComboBox(nullptr)
+    m_pComboBox(nullptr),
+    m_FontSize(DEFAULT_FONT_SIZE)
 {
     m_pLayout = new QHBoxLayout(this);
 
@@ -37,6 +38,7 @@ InputWidget::InputWidget(const QString &tItemName, const InputType &type,
         m_pLayout->addWidget(m_pLineEdit);
         m_InputList.append(m_pLineEdit);
         m_WidgetList.append(m_pLineEdit);
+
     }
     else if(type == ComboBox)
     {
@@ -61,21 +63,35 @@ InputWidget::InputWidget(const QString &tItemName, const InputType &type,
     setLayout(m_pLayout);
 }
 
-std::string InputWidget::GetInput()
+std::string KInputBox::GetInput()
 {
     if(m_pLineEdit)
         return m_pLineEdit->text().toStdString();
     return "";
 }
 
-QDate InputWidget::GetDate()
+int KInputBox::GetInputInt()
+{
+    if(m_pLineEdit == nullptr)
+        return 0;
+    return m_pLineEdit->text().toInt();
+}
+
+double KInputBox::GetInputDouble()
+{
+    if(m_pLineEdit == nullptr)
+        return 0;
+    return m_pLineEdit->text().toDouble();
+}
+
+QDate KInputBox::GetDate()
 {
     if(m_pDateEdit == nullptr)
         return QDate();
     return m_pDateEdit->date();
 }
 
-void InputWidget::AddInputWidget(int num, const QList<int> &widths, const QList<int> &weights)
+void KInputBox::AddInputWidget(int num, const QList<int> &widths, const QList<int> &weights)
 {
     for(int i = 0; i < num; i++)
     {
@@ -98,31 +114,31 @@ void InputWidget::AddInputWidget(int num, const QList<int> &widths, const QList<
     }
 }
 
-void InputWidget::AddComboItem(const QString &item)
+void KInputBox::AddComboItem(const QString &item)
 {
     if(m_pComboBox)
         m_pComboBox->addItem(item);
 }
 
-void InputWidget::AddComboItem(const QList<QString> &list)
+void KInputBox::AddComboItem(const QList<QString> &list)
 {
     if(m_pComboBox)
         m_pComboBox->addItems(list);
 }
 
-void InputWidget::SetInput(const std::string &text)
+void KInputBox::SetInput(const std::string &text)
 {
     if(m_pLineEdit)
         m_pLineEdit->setText(QString(text.c_str()));
 }
 
-void InputWidget::SetInput(int number)
+void KInputBox::SetInput(int number)
 {
     if(m_pLineEdit)
         m_pLineEdit->setText(QString::number(number));
 }
 
-void InputWidget::SetInput(const QList<QString> &list)
+void KInputBox::SetInput(const QList<QString> &list)
 {
     for(int i = 0; i < m_InputList.size(); i++)
     {
@@ -132,7 +148,7 @@ void InputWidget::SetInput(const QList<QString> &list)
     }
 }
 
-void InputWidget::SetInput(const QList<int> &list)
+void KInputBox::SetInput(const QList<int> &list)
 {
     for(int i = 0; i < m_InputList.size(); i++)
     {
@@ -142,7 +158,7 @@ void InputWidget::SetInput(const QList<int> &list)
     }
 }
 
-void InputWidget::SetInput(const QList<double> &list)
+void KInputBox::SetInput(const QList<double> &list)
 {
     for(int i = 0; i < m_InputList.size(); i++)
     {
@@ -152,13 +168,13 @@ void InputWidget::SetInput(const QList<double> &list)
     }
 }
 
-void InputWidget::SetInput(double number)
+void KInputBox::SetInput(double number)
 {
     if(m_pLineEdit)
         m_pLineEdit->setText(QString::number(number));
 }
 
-void InputWidget::SetEditable(bool editable)
+void KInputBox::SetEditable(bool editable)
 {
     if(m_pLineEdit != nullptr)
     {
@@ -170,25 +186,25 @@ void InputWidget::SetEditable(bool editable)
     }
 }
 
-void InputWidget::SetDate(const QDate &date)
+void KInputBox::SetDate(const QDate &date)
 {
     if(m_pDateEdit)
         m_pDateEdit->setDate(date);
 }
 
-void InputWidget::SetDate(const QString &tDateString, const QString &format)
+void KInputBox::SetDate(const QString &tDateString, const QString &format)
 {
     if(m_pDateEdit)
         m_pDateEdit->setDate(QDate::fromString(tDateString, format));
 }
 
-void InputWidget::SetDate(int y, int m, int d)
+void KInputBox::SetDate(int y, int m, int d)
 {
     if(m_pDateEdit)
         m_pDateEdit->setDate(QDate(y, m, d));
 }
 
-void InputWidget::SetHeight(int tHeight)
+void KInputBox::SetHeight(int tHeight)
 {
     if(m_pLineEdit != nullptr)
     {
@@ -202,7 +218,7 @@ void InputWidget::SetHeight(int tHeight)
     }
 }
 
-void InputWidget::SetInputWidth(int tWidth)
+void KInputBox::SetInputWidth(int tWidth)
 {
     if(m_pLineEdit != nullptr)
     {
@@ -221,7 +237,7 @@ void InputWidget::SetInputWidth(int tWidth)
     }
 }
 
-void InputWidget::SetLabelWidth(int tWidth)
+void KInputBox::SetLabelWidth(int tWidth)
 {
     if(m_pItemName != nullptr)
     {
@@ -230,12 +246,13 @@ void InputWidget::SetLabelWidth(int tWidth)
     }
 }
 
-void InputWidget::SetWidth(int tWidth)
+void KInputBox::SetWidth(int tWidth)
 {
-    resize(tWidth, height());
+    //resize(tWidth, height());
+    setMinimumWidth(tWidth);
 }
 
-void InputWidget::SetFontSize(int tSize)
+void KInputBox::SetFontSize(int tSize)
 {
     m_FontSize = tSize;
     if(m_pItemName != nullptr)
@@ -262,7 +279,7 @@ void InputWidget::SetFontSize(int tSize)
     }
 }
 
-void InputWidget::AppendWidget(QLineEdit *pWidget, int width,  int weight)
+void KInputBox::AppendWidget(QLineEdit *pWidget, int width,  int weight)
 {
     if(weight)
     {
@@ -282,7 +299,7 @@ void InputWidget::AppendWidget(QLineEdit *pWidget, int width,  int weight)
     m_WidgetList.append(pWidget);
 }
 
-void InputWidget::AppendWidget(QWidget *pWidget, int width, int weight)
+void KInputBox::AppendWidget(QWidget *pWidget, int width, int weight)
 {
     if(weight)
     {
@@ -301,7 +318,7 @@ void InputWidget::AppendWidget(QWidget *pWidget, int width, int weight)
     m_WidgetList.append(pWidget);
 }
 
-void InputWidget::AppendText(const QString &text, int width,  int weight)
+void KInputBox::AppendText(const QString &text, int width,  int weight)
 {
     QLabel *tLabel = new QLabel(text);
     if(width)
@@ -320,10 +337,18 @@ void InputWidget::AppendText(const QString &text, int width,  int weight)
     }
 }
 
-void InputWidget::InsertWidget(int index, QWidget *pWidget, int width, int weight)
+void KInputBox::InsertWidget(int index, QWidget *pWidget, int width, int weight)
 {
     pWidget->setMinimumWidth(width);
     pWidget->setMaximumWidth(width);
     m_pLayout->insertWidget(index, pWidget, weight);
+}
+
+void KInputBox::SetValidator(const QValidator *validator)
+{
+    for(int i = 0; i < m_InputList.size(); i++)
+    {
+        m_InputList[i]->setValidator(validator);
+    }
 }
 
