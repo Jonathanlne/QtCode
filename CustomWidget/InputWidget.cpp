@@ -85,6 +85,26 @@ void InputWidget::SetInput(const QList<QString> &list)
     }
 }
 
+void InputWidget::SetInput(const QList<int> &list)
+{
+    for(int i = 0; i < m_InputList.size(); i++)
+    {
+        if(i >= list.size())
+            return;
+        SetInput(list[i]);
+    }
+}
+
+void InputWidget::SetInput(const QList<double> &list)
+{
+    for(int i = 0; i < m_InputList.size(); i++)
+    {
+        if(i >= list.size())
+            return;
+        SetInput(list[i]);
+    }
+}
+
 void InputWidget::SetInput(double number)
 {
     if(m_pLineEdit)

@@ -25,6 +25,8 @@ public:
     void SetInput(const std::string &text);
     void SetInput(int number);
     void SetInput(const QList<QString> &list);
+    void SetInput(const QList<int>  &list);
+    void SetInput(const QList<double> &list);
     void SetInput(double number);
     void SetEditable(bool editable);
     void SetDate(const QDate &date);
