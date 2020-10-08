@@ -26,11 +26,17 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
         main.cpp \
         mainwindow.cpp \
-    KInputBox.cpp
+    KInputBox.cpp \
+    KGroupBox.cpp \
+    KVGroupBox.cpp \
+    KDataSourceWidget.cpp
 
 HEADERS += \
         mainwindow.h \
-    KInputBox.h
+    KInputBox.h \
+    KGroupBox.h \
+    KVGroupBox.h \
+    KDataSourceWidget.h
 
 FORMS += \
         mainwindow.ui
