@@ -29,14 +29,16 @@ SOURCES += \
     KInputBox.cpp \
     KGroupBox.cpp \
     KVGroupBox.cpp \
-    KDataSourceWidget.cpp
+    KDataSourceWidget.cpp \
+    KDictionaryDialog.cpp
 
 HEADERS += \
         mainwindow.h \
     KInputBox.h \
     KGroupBox.h \
     KVGroupBox.h \
-    KDataSourceWidget.h
+    KDataSourceWidget.h \
+    KDictionaryDialog.h
 
 FORMS += \
         mainwindow.ui

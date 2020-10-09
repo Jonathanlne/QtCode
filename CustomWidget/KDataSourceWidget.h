@@ -1,8 +1,10 @@
 ﻿#pragma
 
 #include <QWidget>
+#include <QLabel>
 
-class KDataSourceWidget : public QWidget
+class QSize;
+class KDataSourceWidget : public QLabel
 {
     Q_OBJECT
 public:
@@ -11,5 +13,10 @@ public:
 signals:
 
 public slots:
+
+protected:
+    QSize sizeHint() const override;
+private:
+    QSize m_Size;
 };
 
