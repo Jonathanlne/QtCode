@@ -3,7 +3,7 @@
 #include <QPainter>
 #include <QColor>
 #include <QtMath>
-
+#include <QStyleOption>
 #define NUMBER_OF_POINT  (8)
 
 KLoadingWidget::KLoadingWidget(QWidget *parent):
@@ -11,7 +11,7 @@ KLoadingWidget::KLoadingWidget(QWidget *parent):
 {
     setWindowFlags(Qt::Dialog | Qt::FramelessWindowHint
                    | Qt::WindowSystemMenuHint | Qt::WindowMinMaxButtonsHint);
-    //setWindowOpacity(0.5);
+    setWindowOpacity(0.8);
     //setAttribute(Qt::WA_TranslucentBackground, true);
     setMinimumSize(200, 200);
     m_pCancelButton = new QPushButton("取消",this);
@@ -20,7 +20,7 @@ KLoadingWidget::KLoadingWidget(QWidget *parent):
         this->close();
         emit CancelSignal();
     });
-    m_pCancelButton->setStyleSheet("background: rgb(105,170,238); color : white");
+    m_pCancelButton->setStyleSheet("background: gray; color : white");
 
     for(int i = 1;  i <= NUMBER_OF_POINT; i++)
     {
@@ -35,7 +35,7 @@ KLoadingWidget::KLoadingWidget(QWidget *parent):
         repaint();
     });
     m_Timer.start(300);
-
+    setStyleSheet("background: lightgray");
 
 }
 
@@ -67,8 +67,12 @@ void KLoadingWidget::showEvent(QShowEvent *event)
 
 void KLoadingWidget::paintEvent(QPaintEvent *event)
 {
-    static int offset = 0;
     QPainter painter(this);
+    QStyleOption opt;
+    opt.init(this);
+    style()->drawPrimitive(QStyle::PE_Widget, &opt, &painter, this);
+    static int offset = 0;
+
     painter.setPen(QColor(49, 177, 190));
     painter.setBrush(QColor(49, 177, 190));
     painter.setRenderHint(QPainter::Antialiasing);
@@ -77,5 +81,7 @@ void KLoadingWidget::paintEvent(QPaintEvent *event)
         painter.drawEllipse(m_Points[(i + offset) % NUMBER_OF_POINT], m_PointSizes[i], m_PointSizes[i]);
     }
     offset = (offset + 1) % NUMBER_OF_POINT;
+
+
     QDialog::paintEvent(event);
 }
