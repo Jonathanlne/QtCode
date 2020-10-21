@@ -4,31 +4,39 @@
 #include <QColor>
 #include <QtMath>
 
-#define NUMBER_OF_POINT  (10)
+#define NUMBER_OF_POINT  (8)
 
 KLoadingWidget::KLoadingWidget(QWidget *parent):
     QDialog(parent)
 {
-    setWindowFlags(Qt::Dialog | Qt::FramelessWindowHint);
-    setMinimumSize(300, 300);
+    setWindowFlags(Qt::Dialog | Qt::FramelessWindowHint
+                   | Qt::WindowSystemMenuHint | Qt::WindowMinMaxButtonsHint);
+    //setWindowOpacity(0.5);
+    //setAttribute(Qt::WA_TranslucentBackground, true);
+    setMinimumSize(200, 200);
     m_pCancelButton = new QPushButton("取消",this);
+    m_pCancelButton->setFont(QFont());
     connect(m_pCancelButton, &QPushButton::pressed, [=](){
         this->close();
         emit CancelSignal();
     });
+    m_pCancelButton->setStyleSheet("background: rgb(105,170,238); color : white");
+
     for(int i = 1;  i <= NUMBER_OF_POINT; i++)
     {
-        double R = width() * 0.3;
+        double R = width() * 0.15;
         double radian = 360.0 / NUMBER_OF_POINT * i;
         double dx = R * qCos(qDegreesToRadians(radian));
         double dy = R * qSin(qDegreesToRadians(radian));
-        m_Points.append(QPointF(width() / 2 + dx, height() / 2 + dy));
+        m_Points.append(QPointF(width() / 2 + dx, height() / 2 - m_pCancelButton->height() / 2 + dy));
         m_PointSizes.append(i + 2);
     }
     connect(&m_Timer, &QTimer::timeout, [=](){
         repaint();
     });
     m_Timer.start(300);
+
+
 }
 
 void KLoadingWidget::showEvent(QShowEvent *event)
