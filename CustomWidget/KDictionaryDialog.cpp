@@ -9,7 +9,7 @@
 #include <QTextEdit>
 #include <QGroupBox>
 #include <QMenu>
-
+#include "KLoadingWidget.h"
 KDictionaryDialog::KDictionaryDialog(QWidget *parent):
     QDialog(parent)
 {
@@ -88,10 +88,16 @@ KDictionaryDialog::KDictionaryDialog(QWidget *parent):
         QPushButton *pCancelButton = new QPushButton("取消");
         pCancelButton->setMaximumWidth(100);
         QPushButton *pSaveButton = new QPushButton("保存");
+        connect(pSaveButton, &QPushButton::pressed, [=](){
+            KLoadingWidget *loading = new KLoadingWidget(this);
+            loading->raise();
+            loading->exec();
+        });
         pSaveButton->setMaximumWidth(100);
         pButtonLayout->addWidget(new QLabel(""));
         pButtonLayout->addWidget(pCancelButton);
         pButtonLayout->addWidget(pSaveButton);
+
     }
 
     //最外层布局
