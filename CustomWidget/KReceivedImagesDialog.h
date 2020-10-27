@@ -19,7 +19,7 @@ class KReceivedImagesDialog : public QDialog
 public:
     KReceivedImagesDialog(QWidget *parent = nullptr);
     void SetRow(int row);
-
+    ~KReceivedImagesDialog();
 public slots:
     void UpdateData();
     void CheckNewData();

@@ -208,3 +208,8 @@ void KReceivedImagesDialog::SetRow(int row)
 
 }
 
+KReceivedImagesDialog::~KReceivedImagesDialog()
+{
+    m_Timer.stop();
+}
+
