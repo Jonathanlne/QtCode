@@ -117,13 +117,7 @@ void KReceivedImagesDialog::UpdateData()
 
     QFileInfoList infos = dir.entryInfoList();
 
-     m_pTableWidget->setRowCount(infos.size() - 2);
-     m_pTableWidget->setColumnCount(6);
-
-     QStringList header;
-     header << "one" << "two" << "three" << "four" << "five" << "six";
-     m_pTableWidget->setHorizontalHeaderLabels(header);
-    int row = 0;
+    int dicomFileCnt = 0;
     for(int i = 0; i < infos.size(); i++)
     {
         if(infos[i].fileName() == "." || infos[i].fileName() == ".." || infos[i].isDir())
@@ -133,10 +127,20 @@ void KReceivedImagesDialog::UpdateData()
 
         {
             //TODO : Check If Dicom Image
+            dicomFileCnt++;
+            m_FilePathList.append(infos[i].filePath());
+            m_FileNameSet.insert(infos[i].fileName());
         }
-        m_FilePathList.append(infos[i].filePath());
-        m_FileNameSet.insert(infos[i].fileName());
-        SetRow(row++, infos[i].fileName());
+    }
+     m_pTableWidget->setRowCount(dicomFileCnt);
+     m_pTableWidget->setColumnCount(6);
+
+     QStringList header;
+     header << "one" << "two" << "three" << "four" << "five" << "six";
+     m_pTableWidget->setHorizontalHeaderLabels(header);
+    for(int i = 0; i < dicomFileCnt; i++)
+    {
+        SetRow(i);
     }
 
     m_pTableWidget->setSelectionBehavior(QAbstractItemView::SelectRows);
@@ -150,6 +154,8 @@ void KReceivedImagesDialog::CheckNewData()
 {
     QDir dir(m_Path);
     QFileInfoList infos = dir.entryInfoList();
+
+    int dicomFileCnt = 0;
     for(QFileInfo info : infos)
     {
         if(info.isDir() || info.fileName() == "." || info.fileName() == "..")
@@ -168,10 +174,20 @@ void KReceivedImagesDialog::CheckNewData()
             UpdateData();
             break;
         }
+        dicomFileCnt ++;
+    }
+
+    if(dicomFileCnt < m_FileNameSet.size())
+    {
+        //TODO : ASK to reload data
+
+
+        UpdateData();
+        return;
     }
 }
 
-void KReceivedImagesDialog::SetRow(int row, const QString &path)
+void KReceivedImagesDialog::SetRow(int row)
 {
     //TODO
     QWidget *pWidget = new QWidget();
