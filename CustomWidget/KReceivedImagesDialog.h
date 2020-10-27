@@ -13,10 +13,14 @@
 
 class KReceivedImagesDialog : public QDialog
 {
+    Q_OBJECT
 public:
     KReceivedImagesDialog(QWidget *parent = nullptr);
-    void UpdateData();
     void SetRow(int row, const QString &path);
+
+public slots:
+    void UpdateData();
+
 private:
     QTableWidget *m_pTableWidget;
     QList<QCheckBox *> m_pCheckBoxList;

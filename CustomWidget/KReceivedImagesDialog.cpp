@@ -20,6 +20,22 @@ KReceivedImagesDialog::KReceivedImagesDialog(QWidget *parent):
 
     QHBoxLayout *pButtonLayout = new QHBoxLayout();
     {
+        QPushButton *pSelectAllButton = new QPushButton("全选");
+        connect(pSelectAllButton, &QPushButton::pressed, [=](){
+            for(int i = 0; i < m_pCheckBoxList.size(); i++)
+            {
+                m_pCheckBoxList[i]->setChecked(true);
+            }
+        });
+
+        QPushButton *pSelectZeroButton = new QPushButton("全不选");
+        connect(pSelectZeroButton, &QPushButton::pressed, [=](){
+            for(int i = 0; i < m_pCheckBoxList.size(); i++)
+            {
+                m_pCheckBoxList[i]->setChecked(false);
+            }
+        });
+
         QPushButton *pCancelButton = new QPushButton("取消");
         connect(pCancelButton, &QPushButton::pressed, [=](){
             //UpdateData();
@@ -63,6 +79,8 @@ KReceivedImagesDialog::KReceivedImagesDialog(QWidget *parent):
 
             this->close();
         });
+        pButtonLayout->addWidget(pSelectAllButton);
+        pButtonLayout->addWidget(pSelectZeroButton);
         pButtonLayout->addWidget(new QLabel(""), 1);
         pButtonLayout->addWidget(pCancelButton);
         pButtonLayout->addWidget(pAddToStudyButton);
@@ -126,6 +144,7 @@ void KReceivedImagesDialog::SetRow(int row, const QString &path)
     QWidget *pWidget = new QWidget();
     QHBoxLayout *pLayout = new QHBoxLayout();
     QCheckBox *pCheckBox = new QCheckBox();
+    pCheckBox->setChecked(true);
     m_pCheckBoxList.append(pCheckBox);
     pLayout->addWidget(m_pCheckBoxList[row]);
     pLayout->setAlignment(Qt::AlignCenter);
