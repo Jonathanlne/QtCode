@@ -10,6 +10,8 @@
 #include <QTableWidgetItem>
 #include <QCheckBox>
 #include <QList>
+#include <QTimer>
+#include <QSet>
 
 class KReceivedImagesDialog : public QDialog
 {
@@ -20,9 +22,12 @@ public:
 
 public slots:
     void UpdateData();
-
+    void CheckNewData();
 private:
     QTableWidget *m_pTableWidget;
     QList<QCheckBox *> m_pCheckBoxList;
     QList<QString>     m_FilePathList;
+    QTimer             m_Timer;
+    QSet<QString>      m_FileNameSet;
+    QString m_Path ;
 };

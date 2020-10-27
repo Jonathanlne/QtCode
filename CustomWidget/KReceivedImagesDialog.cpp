@@ -5,12 +5,18 @@
 #include <QFile>
 #include <QHeaderView>
 #include <QCheckBox>
+#include <QTimer>
+#include <QMap>
 
 KReceivedImagesDialog::KReceivedImagesDialog(QWidget *parent):
-    QDialog(parent)
+    QDialog(parent),
+    m_Path("./scp")
 {
     setWindowTitle("图像接收");
     setMinimumSize(900, 600);
+
+    connect(&m_Timer, &QTimer::timeout, this, &KReceivedImagesDialog::CheckNewData);
+
     QVBoxLayout *pContentLayout = new QVBoxLayout();
     {
         m_pTableWidget = new QTableWidget(this);
@@ -93,6 +99,8 @@ KReceivedImagesDialog::KReceivedImagesDialog(QWidget *parent):
     }
     setLayout(pLayout);
     setStyleSheet("QPushButton {font-size : 15px; min-width: 100px; min-height: 30px}");
+    m_Timer.setInterval(100);
+    m_Timer.start();
 }
 
 void KReceivedImagesDialog::UpdateData()
@@ -101,9 +109,8 @@ void KReceivedImagesDialog::UpdateData()
     m_pCheckBoxList.clear();
     m_FilePathList.clear();
 
-    QString path = "./scp";
-    QFileInfo fileinfo(path);
-    QDir dir(path);
+    QFileInfo fileinfo(m_Path);
+    QDir dir(m_Path);
     if(!fileinfo.exists()){
         dir.mkdir(dir.absolutePath());
     }
@@ -119,7 +126,7 @@ void KReceivedImagesDialog::UpdateData()
     int row = 0;
     for(int i = 0; i < infos.size(); i++)
     {
-        if(infos[i].fileName() == "." || infos[i].fileName() == "..")
+        if(infos[i].fileName() == "." || infos[i].fileName() == ".." || infos[i].isDir())
         {
             continue;
         }
@@ -128,6 +135,7 @@ void KReceivedImagesDialog::UpdateData()
             //TODO : Check If Dicom Image
         }
         m_FilePathList.append(infos[i].filePath());
+        m_FileNameSet.insert(infos[i].fileName());
         SetRow(row++, infos[i].fileName());
     }
 
@@ -136,6 +144,26 @@ void KReceivedImagesDialog::UpdateData()
 
     m_pTableWidget->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
     m_pTableWidget->horizontalHeader()->setSectionResizeMode(0, QHeaderView::ResizeToContents);
+}
+
+void KReceivedImagesDialog::CheckNewData()
+{
+    QDir dir(m_Path);
+    QFileInfoList infos = dir.entryInfoList();
+    for(QFileInfo info : infos)
+    {
+        if(info.isDir() || info.fileName() == "." || info.fileName() == "..")
+        {
+            continue;
+        }
+        if(m_FileNameSet.find(info.fileName()) == m_FileNameSet.end())
+        {
+            //TODO : ASK to reload data
+
+            UpdateData();
+            break;
+        }
+    }
 }
 
 void KReceivedImagesDialog::SetRow(int row, const QString &path)
