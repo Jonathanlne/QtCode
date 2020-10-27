@@ -1,12 +1,12 @@
 ﻿#include "mainwindow.h"
 #include <QApplication>
-#include "KDictionaryDialog.h"
+#include "KReceivedImagesDialog.h"
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
     //MainWindow w;
     //w.showMaximized();
-    KDictionaryDialog dialog;
+    KReceivedImagesDialog dialog;
     dialog.exec();
 
     return a.exec();

@@ -31,7 +31,8 @@ SOURCES += \
     KVGroupBox.cpp \
     KDataSourceWidget.cpp \
     KDictionaryDialog.cpp \
-    KLoadingWidget.cpp
+    KLoadingWidget.cpp \
+    KReceivedImagesDialog.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -40,7 +41,8 @@ HEADERS += \
     KVGroupBox.h \
     KDataSourceWidget.h \
     KDictionaryDialog.h \
-    KLoadingWidget.h
+    KLoadingWidget.h \
+    KReceivedImagesDialog.h
 
 FORMS += \
         mainwindow.ui

@@ -9,6 +9,8 @@
 #include <QTableWidget>
 #include <QtDebug>
 #include "KDictionaryDialog.h"
+#include "KReceivedImagesDialog.h"
+
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent)
 {
@@ -35,7 +37,7 @@ MainWindow::MainWindow(QWidget *parent) :
     }
     */
     qDebug() << size() ;
-    KDictionaryDialog dialog;
+    KReceivedImagesDialog dialog;
     dialog.exec();
     setCentralWidget(new KDataSourceWidget(this));
     setStyleSheet("background: yellow");
