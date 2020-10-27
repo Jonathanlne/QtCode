@@ -160,6 +160,11 @@ void KReceivedImagesDialog::CheckNewData()
         {
             //TODO : ASK to reload data
 
+
+            {
+                //TODO : Check If Dicom Image
+            }
+
             UpdateData();
             break;
         }
